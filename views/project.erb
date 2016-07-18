@@ -1,0 +1,27 @@
+<div class="col-sm-5">
+  <h3><%= @project.name %></h3>
+  <ul>
+  <% if @employees_proj.any?() %>
+      <% @employees_proj.each do |employee| %>
+      <li><%= employee.name %></li>
+    <% end %>
+  <% end %>
+  </ul>
+
+  <form action="/add_employee_project" method="post">
+    <input type="hidden" name="_method" value="patch">
+    <input type="hidden" name="project_id" value="<%= @project.id %>">
+    <select class="form-control" name="all_employees">
+      <% if @employees.any?() %>
+        <% @employees.each do |employee| %>
+        <option value = "<%= employee.id %>"><%= employee.name %></option>
+        <% end %>
+      <% end %>
+    </select>
+    <button type="submit" class="btn btn-primary">Add employee to project</button>
+  </form>
+</div>
+
+<p>
+  <a href="/">Return to Dashboard</a>
+</p>

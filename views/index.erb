@@ -1,6 +1,16 @@
 <div class='row'>
-<!-- COLUMN ONE -->
-  <div class="col-sm-6">
+  <div class="col-sm-2">
+    <h3>Projects</h3>
+    <ul>
+      <% if @projects.any?() %>
+        <% @projects.each do |project| %>
+          <li><%= project.name %><a href="/project/<%= project.id %>"> Update</a></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+<!-- COLUMN TWO -->
+  <div class="col-sm-5">
     <h3>Divisions</h3>
     <ul>
       <% if @divisions.any?() %>
@@ -10,8 +20,8 @@
       <% end %>
     </ul>
   </div>
-<!-- COLUMN TWO -->
-  <div class="col-sm-6">
+<!-- COLUMN THREE -->
+  <div class="col-sm-5">
     <h3>Employees</h3>
     <ul>
       <% if @employees.any?() %>
@@ -27,8 +37,37 @@
 
 <!-- ROW TWO -->
 <div class="row">
-<!-- COLUMN ONE -->
-  <div class="col-sm-6">
+  <div class="col-lg-2">
+    <h3>Add a Project</h3>
+    <form class="well" action="/add_project" method="post">
+      <div class="form-group row">
+        <label for="project_name" class="form-control-label">Project Name</label>
+        <input type="text" name="project_name" class="form-control">
+      </div>
+      <div class="col-sm-offset-1 col-sm-11">
+        <button type="submit" class="btn btn-primary">Add project</button>
+      </div>
+    </form>
+    <h3>Delete a Project</h3>
+    <form class="well" action="/delete_project" method="post">
+      <input type="hidden" name="_method" value="delete">
+      <label for="project_delete" class="col-sm-2 form-control-label">Project</label>
+      <div class="col-sm-10">
+        <select class="form-control" name="project_delete">
+        <% if @projects.any?() %>
+          <% @projects.each do |project| %>
+            <option value="<%= project.id() %>"><%= project.name() %></option>
+          <% end %>
+        <% end%>
+      </select>
+      </div>
+      <div class="col-sm-offset-1 col-sm-11">
+        <button type="submit" class="btn btn-primary">Delete project</button>
+      </div>
+    </form>
+  </div>
+<!-- COLUMN TWO -->
+  <div class="col-sm-5">
     <h3>Add Divisions</h3>
     <form class="well" action="/add_division" method="post">
       <div class="form-group row">
@@ -41,8 +80,27 @@
         </div>
       </div>
     </form>
+    <h3>Close Division</h3>
+    <form class="well" action="/delete_division" method="post">
+      <input type="hidden" name="_method" value="delete">
+      <div class="form-group row">
+        <label for="division_name_delete" class="col-sm-2 form-control-label">Division Name</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="division_name_delete">
+          <% if @divisions.any?() %>
+            <% @divisions.each do |division| %>
+              <option value="<%= division.id() %>"><%= division.name() %></option>
+            <% end %>
+          <% end%>
+        </select>
+        </div>
+        <div class="col-sm-offset-1 col-sm-11">
+          <button type="submit" class="btn btn-danger">Close Division</button>
+        </div>
+      </div>
+    </form>
   </div>
-  <div class="col-sm-6">
+  <div class="col-sm-5">
     <h3>Add Employees</h3>
     <form class="well" action="/add_employee" method="post">
       <div class="form-group row">
@@ -60,6 +118,93 @@
         </div>
         <div class="col-sm-offset-1 col-sm-11">
           <button type="submit" class="btn btn-success">Add Employee</button>
+        </div>
+      </div>
+    </form>
+    <h3>Terminate Employee</h3>
+    <form class="well" action="/delete_employee" method="post">
+      <input type="hidden" name="_method" value="delete">
+      <div class="form-group row">
+        <label for="employee_name_delete" class="col-sm-2 form-control-label">Employee Name</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="employee_name_delete">
+          <% if @employees.any?() %>
+            <% @employees.each do |employee| %>
+              <option value="<%= employee.id() %>"><%= employee.name() %></option>
+            <% end %>
+          <% end%>
+        </select>
+        </div>
+        <div class="col-sm-offset-1 col-sm-11">
+          <button type="submit" class="btn btn-danger">Terminate Employee</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<hr>
+<!-- THIRD ROW -->
+<div class="row">
+  <div class="col-sm-2">
+  </div>
+  <div class="col-sm-5">
+    <h3>See Employees by Division</h3>
+    <form class="well" action="/show_employees" method='get'>
+      <div class="form-group row">
+        <label for="division_list" class="col-sm-2 form-control-label">Division</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="division_list">
+          <% if @divisions.any?() %>
+            <% @divisions.each do |division| %>
+              <option value="<%= division.id() %>"><%= division.name() %></option>
+            <% end %>
+          <% end%>
+        </select>
+        </div>
+        <div class="col-sm-offset-1 col-sm-11">
+          <button type="submit" class="btn btn-primary">Show Employees</button>
+        </div>
+      </div>
+    </form>
+    <% if @employee_names %>
+      <% if @employee_names.length != 0 %>
+        <% @employee_names.each do |employee| %>
+          <option value="<%= employee.id() %>"><%= employee.name() %></option>
+        <% end %>
+      <% else %>
+        <p>
+          This Division does not have any employees yet.
+        </p>
+      <% end %>
+    <% end%>
+  </div>
+  <div class="col-sm-5">
+    <h3>Add Employee to a Project</h3>
+    <form class="well" action="/add_project_employee" method='post'>
+      <input type="hidden" name="_method" value="patch">
+      <div class="form-group row">
+        <label for="employee_select" class="col-sm-2 form-control-label">Employee</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="employee_select">
+          <% if @employees.any?() %>
+            <% @employees.each do |employee| %>
+              <option value="<%= employee.id() %>"><%= employee.name() %></option>
+            <% end %>
+          <% end%>
+        </select>
+        </div>
+        <label for="project_select" class="col-sm-2 form-control-label">Project</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="project_select">
+          <% if @projects.any?() %>
+            <% @projects.each do |project| %>
+              <option value="<%= project.id() %>"><%= project.name() %></option>
+            <% end %>
+          <% end%>
+        </select>
+        </div>
+        <div class="col-sm-offset-1 col-sm-11">
+          <button type="submit" class="btn btn-primary">Assign Employee</button>
         </div>
       </div>
     </form>
