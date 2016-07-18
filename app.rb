@@ -11,3 +11,20 @@ get('/') do
   @divisions = Division.all
   erb(:index)
 end
+
+post('/add_division') do
+  division_name = params.fetch('division_name')
+  Division.create({:name => division_name})
+  @divisions = Division.all()
+  @employees = Employee.all()
+  erb(:index)
+end
+
+post('/add_employee') do
+  employee_name = params.fetch('employee_name')
+  division_id = params.fetch('divisions').to_i
+  Employee.create({:name => employee_name, :division_id => division_id})
+  @divisions = Division.all()
+  @employees = Employee.all()
+  erb(:index)
+end

@@ -5,7 +5,7 @@
     <ul>
       <% if @divisions.any?() %>
         <% @divisions.each do |division| %>
-        <li><%= division.name %></li>
+          <li><%= division.name %></li>
         <% end %>
       <% end %>
     </ul>
@@ -15,8 +15,9 @@
     <h3>Employees</h3>
     <ul>
       <% if @employees.any?() %>
-      <% @employees.each do |employee| %>
-      <li><%= employee.name %></li>
+        <% @employees.each do |employee| %>
+          <li><%= employee.name %></li>
+        <% end %>
       <% end %>
     </ul>
   </div>
@@ -52,12 +53,13 @@
           <select class="form-control" name="divisions">
           <% if @divisions.any?() %>
             <% @divisions.each do |division| %>
-            <option><%= division.name %></option>
+              <option value="<%= division.id() %>"><%= division.name() %></option>
+            <% end %>
           <% end%>
         </select>
-        <button type="submit" class="btn btn-success">Add Employee</button>
         </div>
         <div class="col-sm-offset-1 col-sm-11">
+          <button type="submit" class="btn btn-success">Add Employee</button>
         </div>
       </div>
     </form>
