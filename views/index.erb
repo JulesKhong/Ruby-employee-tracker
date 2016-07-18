@@ -1,0 +1,65 @@
+<div class='row'>
+<!-- COLUMN ONE -->
+  <div class="col-sm-6">
+    <h3>Divisions</h3>
+    <ul>
+      <% if @divisions.any?() %>
+        <% @divisions.each do |division| %>
+        <li><%= division.name %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+<!-- COLUMN TWO -->
+  <div class="col-sm-6">
+    <h3>Employees</h3>
+    <ul>
+      <% if @employees.any?() %>
+      <% @employees.each do |employee| %>
+      <li><%= employee.name %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<hr>
+
+<!-- ROW TWO -->
+<div class="row">
+<!-- COLUMN ONE -->
+  <div class="col-sm-6">
+    <h3>Add Divisions</h3>
+    <form class="well" action="/add_division" method="post">
+      <div class="form-group row">
+        <label for="division_name" class="col-sm-2 form-control-label">Division Name</label>
+        <div class="col-sm-10">
+          <input type="text" name="division_name" class="form-control">
+        </div>
+        <div class="col-sm-offset-1 col-sm-11">
+          <button type="submit" class="btn btn-success">Add Division</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-sm-6">
+    <h3>Add Employees</h3>
+    <form class="well" action="/add_employee" method="post">
+      <div class="form-group row">
+        <label for="employee_name" class="col-sm-2 form-control-label">Employee Name</label>
+        <div class="col-sm-10">
+          <input type="text" name="employee_name" class="form-control">
+          <label for="division">Division</label>
+          <select class="form-control" name="divisions">
+          <% if @divisions.any?() %>
+            <% @divisions.each do |division| %>
+            <option><%= division.name %></option>
+          <% end%>
+        </select>
+        <button type="submit" class="btn btn-success">Add Employee</button>
+        </div>
+        <div class="col-sm-offset-1 col-sm-11">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
